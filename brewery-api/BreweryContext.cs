@@ -29,6 +29,49 @@ public class Brewery
 
        public List<Beer> Beers { get; } = new();
 }
+
+public class  Wholesaler : Brewery
+{
+       public int WholesalerId { get; set; }
+       public string Name { get; set; }
+       
+       public List<Beer> Beers { get; } = new();
+
+       void buyBeers()
+       {
+       }
+
+
+
+}
+
+
+public class Client
+{
+       public int ClientId { get; set; }
+       public List<BeerOrder> BeerOrders { get; } = new();
+       
+       void getSalesQuote(int orderAmount, string beerName, string wholesalerName)
+       {
+              // Returns a price, and summary of the quote
+       }
+
+       void createOrder(List<BeerOrder> orders)
+       {
+              foreach (var order in orders)
+              {
+                     BeerOrders.Add(order); 
+              }
+              
+       }
+
+       public struct BeerOrder
+       {
+              private int amount;
+              private string beerName;
+              private string wholesalerName;
+       }
+}
        
 // Each brewer has its own list of beers, they are not shared.
 // Which means we can set a price and stock, and it will be linked to only one brewer.
