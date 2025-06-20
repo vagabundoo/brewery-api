@@ -4,36 +4,29 @@ using System.Threading.Tasks;
 using brewery_api;
 using Microsoft.EntityFrameworkCore;
 
-namespace brewery_api.Utilities
+namespace brewery_api
 {
-    public class MockDataGenerator
+    public class MockDataGenerator(BreweryContext db)
     {
-        private readonly BreweryContext _db;
-
-        public MockDataGenerator(BreweryContext db)
-        {
-            _db = db;
-        }
-
         public async Task GenerateAsync()
         {
             // Reset database
-            _db.Database.EnsureDeleted();
-            _db.Database.EnsureCreated();
+            db.Database.EnsureDeleted();
+            db.Database.EnsureCreated();
 
             // Create
             var brewery = new Brewery { Name = "Leffe" };
-            _db.Breweries.Add(brewery);
-            await _db.SaveChangesAsync();
+            db.Breweries.Add(brewery);
+            await db.SaveChangesAsync();
 
             // Read
-            var retrieved = await _db.Breweries
+            var retrieved = await db.Breweries
                 .OrderBy(b => b.BreweryId)
                 .FirstOrDefaultAsync();
 
             if (retrieved != null)
             {
-                // Update
+                // Update: add new beer
                 retrieved.Beers.Add(new Beer
                 {
                     Name = "Leffe Blond",
@@ -41,11 +34,21 @@ namespace brewery_api.Utilities
                     Stock = 200,
                     BreweryId = retrieved.BreweryId
                 });
-                await _db.SaveChangesAsync();
+                await db.SaveChangesAsync();
+                
+                // Update: change price of exisiting beer
+                double newPrice = 10.0;
+                var specificBeer = await db.Beers
+                    .Where(b => b.BreweryId == retrieved.BreweryId)
+                    .FirstOrDefaultAsync();
+                
+                if  (specificBeer != null)
+                    specificBeer.Price =  newPrice;
+                await db.SaveChangesAsync();
 
                 // Delete
-                _db.Breweries.Remove(retrieved);
-                await _db.SaveChangesAsync();
+                db.Breweries.Remove(retrieved);
+                await db.SaveChangesAsync();
             }
 
             Console.WriteLine("Done!");
