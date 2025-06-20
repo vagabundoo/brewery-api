@@ -1,3 +1,6 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using brewery_api;
+using brewery_api.Utilities;
 
-Console.WriteLine("Hello, World!");
+var db = new BreweryContext();
+var generator = new MockDataGenerator(db);
+await generator.GenerateAsync();
