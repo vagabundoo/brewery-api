@@ -33,16 +33,10 @@ public class Brewery
 public class  Wholesaler : Brewery
 {
        public int WholesalerId { get; set; }
-       public string Name { get; set; }
-       
-       public List<Beer> Beers { get; } = new();
 
        void buyBeers()
        {
        }
-
-
-
 }
 
 
@@ -53,15 +47,12 @@ public class Client
        
        void getSalesQuote(int orderAmount, string beerName, string wholesalerName)
        {
-              // Returns a price, and summary of the quote
+              // If unsucessful, returns false
+              // If succesful, returns true and, a price, and summary of the quote
        }
 
        void createOrder(List<BeerOrder> orders)
        {
-              foreach (var order in orders)
-              {
-                     BeerOrders.Add(order); 
-              }
               
        }
 
