@@ -7,6 +7,7 @@ public class BreweryContext : DbContext
 {
        public DbSet<Brewery> Breweries { get; set; }
        public DbSet<Beer>  Beers { get; set; }
+       public DbSet<Wholesaler> Wholesalers { get; set; }
        
        public string DbPath { get; }
 
@@ -24,16 +25,21 @@ public class BreweryContext : DbContext
 
 public class Brewery
 {
-       public int BreweryId { get; set; }
+       
+       public int Id { get; set; }
        public string Name { get; set; }
 
        public List<Beer> Beers { get; } = new();
 
 }
 
-public class  Wholesaler : Brewery
+public class  Wholesaler 
 {
-       public int WholesalerId { get; set; }
+       public int Id { get; set; }
+       
+       public string Name { get; set; }
+       
+       public List<Beer> Beers { get; } = new();
 
        void buyBeers()
        {
@@ -70,7 +76,7 @@ public class Client
 // No amount is needed for breweries, but it is needed for wholesalers.
 public class Beer
 {
-       public int BeerId { get; set; }
+       public int Id { get; set; }
        public int BreweryId { get; set; }
        public string? Name { get; set; }
        public double Price { get; set; }

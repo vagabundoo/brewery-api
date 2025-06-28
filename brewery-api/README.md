@@ -43,4 +43,6 @@ Wholesaler has a table with recorded sales.
 - Brewery sells 10 units of beer to wholesaler => wholesaler has 10 units of beer in inventory.
 
 - Client requests quote for 10 units of beer to wholesaler.
-- Quote is returned
+- Quote is returned with price.
+- Client requests quote for 20 units of beer to wholesaler.
+- Quote is returned with error message.
