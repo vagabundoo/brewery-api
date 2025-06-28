@@ -28,6 +28,7 @@ public class Brewery
        public string Name { get; set; }
 
        public List<Beer> Beers { get; } = new();
+
 }
 
 public class  Wholesaler : Brewery
@@ -65,13 +66,13 @@ public class Client
 }
        
 // Each brewer has its own list of beers, they are not shared.
-// Which means we can set a price and stock, and it will be linked to only one brewer.
+// Which means we can set a price, and it will be linked to only one brewer.
+// No amount is needed for breweries, but it is needed for wholesalers.
 public class Beer
 {
        public int BeerId { get; set; }
-       public string Name { get; set; }
-       public double Price { get; set; }
-       public int Stock { get; set; }
-       
        public int BreweryId { get; set; }
+       public string? Name { get; set; }
+       public double Price { get; set; }
+       public int? Amount { get; set; }
 }

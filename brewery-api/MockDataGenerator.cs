@@ -31,7 +31,7 @@ namespace brewery_api
                 {
                     Name = "Leffe Blond",
                     Price = 5.0,
-                    Stock = 200,
+                    Amount= 200,
                     BreweryId = retrieved.BreweryId
                 });
                 await db.SaveChangesAsync();

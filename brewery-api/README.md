@@ -24,3 +24,23 @@ Below are listed the functional and technical requirements sent by your client
 - Use REST architecture
 - Use Entity Framework
 - No migrations are needed; use Ensure Deleted and Ensure Created to facilitate development and code reviews.
+
+## Translating requirements to code
+Each brewery has a number of beers, but no inventory.
+Wholesaler has an inventory of beers.
+- each beer is linked to brewery by id, and price.
+Wholesaler has a table with recorded sales.
+
+## Example flow to get first working version - simplest possible scenario
+
+- Create a brewery, with 1 beer type
+- Create a wholesaler, with 1 beer type
+- Create a client
+- Add beer to brewery
+- Add beer to wholesaler
+
+- Wholesaler requests a sale of 10 units of beer from brewery.
+- Brewery sells 10 units of beer to wholesaler => wholesaler has 10 units of beer in inventory.
+
+- Client requests quote for 10 units of beer to wholesaler.
+- Quote is returned
