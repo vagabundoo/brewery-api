@@ -1,10 +1,7 @@
-﻿namespace brewery_api;
+﻿namespace brewery_api.Services;
 
-public class SaleMethods
+public class ClientWholesalerService
 {
-    // Make a qoute
-    // requires a dict of beernames, and amounts
-   
     (List<BeerOrder>, double?) GetQoute(List<BeerOrder> beerOrders, string wholesalerName, List<Wholesaler> wholesalers, List<Beer> beers)
     {
         Wholesaler? wholesaler = wholesalers.FirstOrDefault(w => w.Name == wholesalerName);

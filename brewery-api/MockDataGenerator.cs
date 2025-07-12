@@ -56,7 +56,7 @@ namespace brewery_api
                 db.Breweries.Remove(retrieved);
                 await db.SaveChangesAsync();
                 */
-                
+                /*
                 // Create wholesaler
                 var wholesaler = new Wholesaler { Name = "Belgian Beers" };
                 db.Wholesalers.Add(wholesaler);
@@ -102,7 +102,7 @@ namespace brewery_api
                         await db.SaveChangesAsync();
                     }
                     
-                }
+                }*/
                 
                 
                 

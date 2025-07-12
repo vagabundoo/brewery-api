@@ -25,11 +25,10 @@ public class BreweryContext : DbContext
 
 public class Brewery
 {
-       
        public int Id { get; set; }
        public string Name { get; set; }
 
-       public List<Beer> Beers { get; } = new();
+       public List<Beer> Beers { get; set; } = new();
 
 }
 
@@ -43,31 +42,6 @@ public class  Wholesaler
 
        void buyBeers()
        {
-       }
-}
-
-
-public class Client
-{
-       public int ClientId { get; set; }
-       public List<BeerOrder> BeerOrders { get; } = new();
-       
-       void getSalesQuote(int orderAmount, string beerName, string wholesalerName)
-       {
-              // If unsucessful, returns false
-              // If succesful, returns true and, a price, and summary of the quote
-       }
-
-       void createOrder(List<BeerOrder> orders)
-       {
-              
-       }
-
-       public struct BeerOrder
-       {
-              private int amount;
-              private string beerName;
-              private string wholesalerName;
        }
 }
        
