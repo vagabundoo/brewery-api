@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi;
+using Scalar.AspNetCore;
 
 var db = new BreweryContext();
 
@@ -51,18 +53,60 @@ var totalPrice = service.GetTotalPriceWithDiscount(beerOrders);
 var (filledOrders, price) = service.GetQoute(beerOrders, wholesaler, wholesaler.Beers);
 var summary = service.SummarizeQuoteToString(filledOrders);
 
-Console.WriteLine();
-
 // Api Logic
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<BreweryContext>();
+
 var app = builder.Build();
+
 
 app.MapGet("/beer", async (BreweryContext db) =>
     await db.Beers.ToListAsync());
 
+app.MapGet("/beer/{id}", async (BreweryContext db, int id) =>
+    await db.Beers
+        .Where(b => b.Id == id)
+        .ToListAsync());
+
 app.MapGet("/brewery", async (BreweryContext db) => 
-    await db.Beers.ToListAsync());
+    await db.Breweries.ToListAsync());
+
+app.MapGet("/brewery/{breweryId}",
+    async (BreweryContext db, int breweryId) =>
+    {
+        var brewery = db.Breweries
+            .FirstOrDefault(br => br.Id == breweryId);
+        if (brewery == null)
+        {
+            return Results.NotFound();
+        }
+        return Results.Ok(brewery);
+    });
+    
+
+app.MapPost("/brewery/{breweryId}/beer/sample",
+    async (BreweryContext db, int breweryId) =>
+    {
+        var brewery = db.Breweries
+            .FirstOrDefault(br => br.Id == breweryId);
+        if (brewery == null)
+        {
+            return Results.NotFound();
+        }
+        
+        var beer = new Beer
+        {
+            Name = "Heineken",
+            Price = 4.5,
+            BreweryId = brewery!.Id
+        };
+        
+        db.Beers.Add(beer);
+        await db.SaveChangesAsync();
+
+        return Results.Ok($"Beer has been added");
+    });
+       
 
 app.MapGet("/wholesaler", async (BreweryContext db) =>
     await db.Wholesalers.ToListAsync());
@@ -120,6 +164,7 @@ async void UpdateWholesalerStock(DbContext db, int amount)
 {
     //db.Wholesa
 }
+
 
 //var beers = db.Beers.Local.ToHashSet();
 
