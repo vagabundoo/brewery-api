@@ -12,7 +12,11 @@ Below are listed the functional and technical requirements sent by your client
 - Upon a sale, the quantity of a beer needs to be incremented in the wholesaler's inventory
 - A client can request a quote from a wholesaler.
 - If successful, the quote returns a price and a summary of the quote. A 10% discount is applied for orders above 10 units. A 20% discount is applied for orders above 20 drinks.
-- If there is an error, it returns an exception and a message to explain the reason: order cannot be empty; wholesaler must exist; there can't be any duplicates in the order; the number of beers ordered cannot be greater than the wholesaler's stock; the beer must be sold by the wholesaler
+- If there is an error, it returns an exception and a message to explain the reason: 
+  - order cannot be empty; wholesaler must exist; 
+  - there can't be any duplicates in the order; 
+  - the number of beers ordered cannot be greater than the wholesaler's stock; 
+  - the beer must be sold by the wholesaler
 - A brewer brews one or several beers
 - A beer is always linked to a brewer
 - A beer can be sold by several wholesalers
@@ -24,6 +28,32 @@ Below are listed the functional and technical requirements sent by your client
 - Use REST architecture
 - Use Entity Framework
 - No migrations are needed; use Ensure Deleted and Ensure Created to facilitate development and code reviews.
+
+table: beers (id, brewery, price)
+wholesaler inventory (beerid, stock)
+
+## Api endpoints
+- GET /beer/{brewery}
+- PUT /beer/{brewery
+- DELETE
+- UPDATE
+
+client requests quote to specific wholesaler
+order includes: list of (beer name/id, amount)
+-> bool: possible
+-> if possible: price + summary
+    - apply discounts
+-> if not possible:
+
+## Thought process
+
+We can separate the project into:
+- SQL database to store data
+- EF to talk to database
+- REST API
+- Business Logic
+
+## DB Schema
 
 ## Translating requirements to code
 Each brewery has a number of beers, but no inventory.
