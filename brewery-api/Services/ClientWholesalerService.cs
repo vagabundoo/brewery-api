@@ -81,8 +81,7 @@ public class ClientWholesalerService
         foreach (var beerOrder in beerOrders)
         {
             var beerName = beerOrder.BeerName;
-            var price = (from Beer in beers where beerName == Beer.Name select Beer.Price).FirstOrDefault();
-            //var price = beers.Where(b => b.Name == beerName).FirstOrDefault().Price;
+            var price = beers.FirstOrDefault(b => b.Name == beerName)?.Price ?? 0;
             beerOrder.TotalPrice = price;
         }
         return beerOrders;

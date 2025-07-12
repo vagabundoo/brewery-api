@@ -7,30 +7,10 @@ var db = new BreweryContext();
 db.Database.EnsureDeleted();
 db.Database.EnsureCreated();
 
-var brewery1 = new Brewery
-{
-    Name = "Leffe"
-};
+InitBreweries(db);
+InitWholesalers(db);
 
-db.Add(brewery1);
-await db.SaveChangesAsync();
-
-var beer1 = new Beer
-{
-    Name = "Leffe Blond",
-    BreweryId = brewery1.Id,
-    Price = 3,
-};
-var beer2 = new Beer
-{
-    Name = "Leffe Tripel",
-    BreweryId = brewery1.Id,
-    Price = 5,
-};
-db.Beers.Attach(beer1);
-db.Beers.Attach(beer2);
-await db.SaveChangesAsync();
-
+/*
 var wholesaler = new Wholesaler
 {
     Name = "BeersRwe",
@@ -52,4 +32,41 @@ await db.SaveChangesAsync();
 wholesaler.Beers
     .FindAll(b => b.Id == beer1.Id)
     .ForEach(b => Console.WriteLine($"Beer 1: {b.Name}, Amount: {b.Amount}"));
+    */
+return;
 
+
+async void InitBreweries(DbContext db)
+{
+    var brewery1 = new Brewery
+    {
+        Name = "Leffe"
+    };
+    db.Add(brewery1);
+    await db.SaveChangesAsync();
+    
+    var beer1 = new Beer
+    {
+        Name = "Leffe Blond",
+        BreweryId = brewery1.Id,
+        Price = 3,
+    };
+    var beer2 = new Beer
+    {
+        Name = "Leffe Tripel",
+        BreweryId = brewery1.Id,
+        Price = 5,
+    };
+    db.Add(beer1);
+    db.Add(beer2);
+    await db.SaveChangesAsync();
+}
+
+async void InitWholesalers(DbContext db)
+{
+    var wholesaler = new Wholesaler
+    {
+        Name = "BeersRwe",
+    };
+    await db.SaveChangesAsync();
+}
