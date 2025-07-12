@@ -16,6 +16,14 @@ public class ClientWholesalerService
         return (beerOrders, totalPrice);
     }
 
+    public string SummarizeQuoteToString(List<BeerOrder> beerOrders)
+    {
+        string result = string.Join("\n", beerOrders
+            .Select(b => $"Beer: {b.BeerName}, Amount: {b.BeerAmount}, Price = {b.TotalPrice}"));
+        
+        return result;
+    }
+
     public double GetTotalPriceWithDiscount(List<BeerOrder> beerOrders)
     {
         int amountOrdered = (from order in beerOrders select order.BeerAmount).Sum();

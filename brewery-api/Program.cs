@@ -1,6 +1,7 @@
 ﻿using brewery_api;
 using brewery_api.Services;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -47,13 +48,12 @@ beerOrders = service.AddPriceToBeerOrders(beerOrders, beers);
 
 var totalPrice = service.GetTotalPriceWithDiscount(beerOrders);
 
-var (summary, price) = service.GetQoute(beerOrders, wholesaler, wholesaler.Beers);
-
+var (filledOrders, price) = service.GetQoute(beerOrders, wholesaler, wholesaler.Beers);
+var summary = service.SummarizeQuoteToString(filledOrders);
 
 Console.WriteLine();
 
 // Api Logic
-/*
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<BreweryContext>();
 var app = builder.Build();
@@ -67,8 +67,13 @@ app.MapGet("/brewery", async (BreweryContext db) =>
 app.MapGet("/wholesaler", async (BreweryContext db) =>
     await db.Wholesalers.ToListAsync());
 
+app.MapGet("/quote/sample", () =>
+{
+    var quote = new { Summary = summary, Price = price };
+    return Results.Json(quote);
+});
+
 app.Run();
-*/
 return;
 
 
