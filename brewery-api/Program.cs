@@ -1,38 +1,74 @@
 ﻿using brewery_api;
+using brewery_api.Services;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 var db = new BreweryContext();
 
 // Reset database
+//Database logic
 db.Database.EnsureDeleted();
 db.Database.EnsureCreated();
 
 InitBreweries(db);
-InitWholesalers(db);
+var beers = await db.Beers
+    .ToListAsync();
+InitWholesalers(db, beers);
 
-/*
-var wholesaler = new Wholesaler
+var wholesaler = await db.Wholesalers.FirstAsync();
+
+wholesaler.Beers
+    .ForEach(b => Console.WriteLine($"{b.Id} Beer: {b.Name}, Amount: {b.Amount}"));
+
+var beerToPurchase = beers[0];
+wholesaler.Beers
+    .Find(b => b.Id == beerToPurchase.Id)
+    .Amount += 20;
+
+beerToPurchase = db.Beers.Find(beerToPurchase.Id);
+WholesalerBreweryService.IncrementBeerAmount(beerToPurchase, 50);
+await db.SaveChangesAsync();
+
+wholesaler.Beers
+    .ForEach(b => Console.WriteLine($"{b.Id} Beer: {b.Name}, Amount: {b.Amount}"));
+
+// Client asks for quote
+var beerOrders = new List<BeerOrder>
 {
-    Name = "BeersRwe",
-    Beers = new List<Beer> { beer1, beer2 },
+    new BeerOrder("Leffe Blond", 30),
 };
 
-wholesaler.Beers.ForEach(b => b.Amount = 0);
-db.Wholesalers.Attach(wholesaler);
-await db.SaveChangesAsync();
+var service = new ClientWholesalerService();
+var errorMessage = service.GetReasonOrderInvalid(beerOrders, wholesaler);
 
-wholesaler.Beers
-    .FindAll(b => b.Id == beer1.Id)
-    .ForEach(b => Console.WriteLine($"Beer 1: {b.Name}, Amount: {b.Amount}"));
+beerOrders = service.AddPriceToBeerOrders(beerOrders, beers);
+
+var totalPrice = service.GetTotalPriceWithDiscount(beerOrders);
+
+var (summary, price) = service.GetQoute(beerOrders, wholesaler, wholesaler.Beers);
 
 
-wholesaler.Beers.Find(b => b.Name == beer1.Name)!.Amount += 10;
-await db.SaveChangesAsync();
+Console.WriteLine();
 
-wholesaler.Beers
-    .FindAll(b => b.Id == beer1.Id)
-    .ForEach(b => Console.WriteLine($"Beer 1: {b.Name}, Amount: {b.Amount}"));
-    */
+// Api Logic
+/*
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<BreweryContext>();
+var app = builder.Build();
+
+app.MapGet("/beer", async (BreweryContext db) =>
+    await db.Beers.ToListAsync());
+
+app.MapGet("/brewery", async (BreweryContext db) => 
+    await db.Beers.ToListAsync());
+
+app.MapGet("/wholesaler", async (BreweryContext db) =>
+    await db.Wholesalers.ToListAsync());
+
+app.Run();
+*/
 return;
 
 
@@ -62,11 +98,23 @@ async void InitBreweries(DbContext db)
     await db.SaveChangesAsync();
 }
 
-async void InitWholesalers(DbContext db)
+async void InitWholesalers(DbContext db, List<Beer> beers)
 {
     var wholesaler = new Wholesaler
     {
         Name = "BeersRwe",
+        Beers = beers,
     };
+
+    wholesaler.Beers.ForEach(b => b.Amount = 0);
+    db.Add(wholesaler);
     await db.SaveChangesAsync();
 }
+
+async void UpdateWholesalerStock(DbContext db, int amount)
+{
+    //db.Wholesa
+}
+
+//var beers = db.Beers.Local.ToHashSet();
+

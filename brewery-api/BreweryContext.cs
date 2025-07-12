@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
+using Microsoft.Extensions.Logging;
 
 namespace brewery_api;
 using System;
@@ -16,13 +18,13 @@ public class BreweryContext : DbContext
 
        public BreweryContext()
        {
-              var folder = Environment.SpecialFolder.LocalApplicationData;
-              var path = Environment.GetFolderPath(folder);
-              DbPath = System.IO.Path.Combine(path, "brewery.db");
+              DbPath = System.IO.Path.Combine("../brewery.db");
        }
        
        protected override void OnConfiguring(DbContextOptionsBuilder options)
-              => options.UseSqlite($"Data Source={DbPath}");
+              => options
+                     .UseSqlite($"Data Source={DbPath}")
+                     .LogTo(message => Debug.WriteLine(message));
 
        protected override void OnModelCreating(ModelBuilder modelBuilder)
        {
@@ -38,8 +40,9 @@ public class BreweryContext : DbContext
                      .HasMany(b => b.Wholesalers)
                      .WithMany(w => w.Beers)
                      .UsingEntity(j => j.ToTable("WholesalerBeers"));
-       }
 
+              //modelBuilder.Entity<Wholesaler>();
+       }
 }
 
 // Each brewer has its own list of beers, they are not shared.
@@ -47,11 +50,12 @@ public class BreweryContext : DbContext
 // No amount is needed for breweries, but it is needed for wholesalers.
 public class Beer
 {
+       [Key]
        public int Id { get; set; } 
 
        public required string Name { get; set; }
        public double Price { get; set; }
-       public int? Amount { get; set; }
+       public int Amount { get; set; }
 
        public int BreweryId { get; set; } // Foreign key
        public Brewery? Brewery { get; set; }

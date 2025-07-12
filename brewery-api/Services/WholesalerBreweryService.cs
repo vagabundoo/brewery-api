@@ -16,4 +16,15 @@ public static class WholesalerBreweryService
         }
         return wholesaler;
     }
+
+    public static List<Beer> AddBeerToInventory(List<Beer> currentBeers, Beer beer)
+    {
+        currentBeers.Add(beer);
+        return currentBeers;
+    }
+    public static Beer IncrementBeerAmount(Beer beer, int amount)
+    {
+        beer.Amount += amount;
+        return beer;
+    }
 }

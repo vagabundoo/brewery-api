@@ -65,6 +65,11 @@ Wholesaler has a table with recorded sales.
 
 - Create a brewery, with 1 beer type
 - Create a wholesaler, with 1 beer type
+- Wholesaler purchases 10 beers from brewery, and their inventory is increased.
+
+- Client, through REST api ->
+1. Submits a request for an order and gets a summary quote
+
 - Create a client
 - Add beer to brewery
 - Add beer to wholesaler

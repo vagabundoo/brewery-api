@@ -2,9 +2,8 @@
 
 public class ClientWholesalerService
 {
-    (List<BeerOrder>, double?) GetQoute(List<BeerOrder> beerOrders, string wholesalerName, List<Wholesaler> wholesalers, List<Beer> beers)
+    public (List<BeerOrder>, double) GetQoute(List<BeerOrder> beerOrders, Wholesaler wholesaler, List<Beer> beers)
     {
-        Wholesaler? wholesaler = wholesalers.FirstOrDefault(w => w.Name == wholesalerName);
         var invalidOrderMessage = GetReasonOrderInvalid(beerOrders, wholesaler);
         if (invalidOrderMessage != null)
         {
@@ -17,10 +16,10 @@ public class ClientWholesalerService
         return (beerOrders, totalPrice);
     }
 
-    double? GetTotalPriceWithDiscount(List<BeerOrder> beerOrders)
+    public double GetTotalPriceWithDiscount(List<BeerOrder> beerOrders)
     {
         int amountOrdered = (from order in beerOrders select order.BeerAmount).Sum();
-        double? totalPrice = (from order in beerOrders select order.TotalPrice).Sum();
+        double totalPrice = (from order in beerOrders select order.TotalPrice).Sum() ?? 0;
 
         if (amountOrdered >= 20)
         {
@@ -36,7 +35,7 @@ public class ClientWholesalerService
 
     }
 
-    string? GetReasonOrderInvalid(List<BeerOrder> beerOrders, Wholesaler? wholesaler)
+    public string? GetReasonOrderInvalid(List<BeerOrder> beerOrders, Wholesaler? wholesaler)
     {
         if (beerOrders.Count == 0)
         {
@@ -76,7 +75,7 @@ public class ClientWholesalerService
         return null;
     }
     
-    List<BeerOrder> AddPriceToBeerOrders(List<BeerOrder> beerOrders, List<Beer> beers)
+    public List<BeerOrder> AddPriceToBeerOrders(List<BeerOrder> beerOrders, List<Beer> beers)
     {
         foreach (var beerOrder in beerOrders)
         {
