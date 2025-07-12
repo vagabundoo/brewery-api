@@ -4,41 +4,54 @@ public class SaleMethods
 {
     // Make a qoute
     // requires a dict of beernames, and amounts
-    
-    // Check if a quote can be met by a brewery or wholesaler
-    bool PossibleOrder(List<BeerOrder> beerOrders, List<BeerOrder> beerInventory)
+   
+    (List<BeerOrder>, double?) GetQoute(List<BeerOrder> beerOrders, string wholesalerName, List<Wholesaler> wholesalers, List<Beer> beers)
     {
-        int requiredOrders = beerOrders.Count();
-        int possibleOrders = 0;
-        
-        foreach (var beerOrder in beerOrders)
+        Wholesaler? wholesaler = wholesalers.FirstOrDefault(w => w.Name == wholesalerName);
+        var invalidOrderMessage = GetReasonOrderInvalid(beerOrders, wholesaler);
+        if (invalidOrderMessage != null)
         {
-            var possibleOrder = beerInventory
-                .Where(beerInventory => beerInventory.BeerName == beerOrder.BeerName)
-                .Where(beerInventory => beerInventory.BeerAmount >= beerOrder.BeerAmount);
-            if (possibleOrder.Any())
-                possibleOrders += 1;
+            Console.WriteLine(invalidOrderMessage);
         }
-        if (requiredOrders >= possibleOrders)
-            return true;
-        return false;
+        
+        beerOrders = AddPriceToBeerOrders(beerOrders, beers);
+        var totalPrice = GetTotalPriceWithDiscount(beerOrders);
+        
+        return (beerOrders, totalPrice);
     }
 
-    void CheckOrder(List<BeerOrder> beerOrders, Wholesaler wholesaler)
+    double? GetTotalPriceWithDiscount(List<BeerOrder> beerOrders)
+    {
+        int amountOrdered = (from order in beerOrders select order.BeerAmount).Sum();
+        double? totalPrice = (from order in beerOrders select order.TotalPrice).Sum();
+
+        if (amountOrdered >= 10)
+        {
+            totalPrice = totalPrice * 0.90;
+        } else if (amountOrdered >= 20)
+        {
+            totalPrice = totalPrice * 0.80;
+        }
+
+        return totalPrice;
+
+    }
+
+    string? GetReasonOrderInvalid(List<BeerOrder> beerOrders, Wholesaler? wholesaler)
     {
         if (beerOrders.Count == 0)
         {
-            Console.WriteLine("order is empty");    
+            return "order is empty";    
         }
         if (wholesaler == null)
         {
-            Console.WriteLine("wholesaler must exist");
+            return "wholesaler must exist";
         }
         
         var allUnique = beerOrders.Distinct();
         if (allUnique.Count() != beerOrders.Count)
         {
-            Console.WriteLine("there can't be any duplicates in the order");
+            return "there can't be any duplicates in the order";
         }
 
         foreach (var beerOrder in beerOrders)
@@ -47,7 +60,7 @@ public class SaleMethods
             var beerAvaliable = availableBeers.Any(b => b.Name == beerOrder.BeerName);
             if (!beerAvaliable)
             {
-                Console.WriteLine("the beer must be sold by the wholesaler");
+                return "the beer must be sold by the wholesaler";
             }
 
             var beerInStock = (
@@ -58,24 +71,12 @@ public class SaleMethods
 
             if (!beerInStock)
             {
-                Console.WriteLine("the number of beers ordered cannot be greater than the wholesaler's stock");
+                return "the number of beers ordered cannot be greater than the wholesaler's stock";
             }
-
         }
-        
-        
-        
-        
-            
+        return null;
     }
-    // Reason an order might not be possible:
-    //- order is empty
-    //- wholesaler must exist
-    //- there can't be any duplicates in the order; 
-    //- the number of beers ordered cannot be greater than the wholesaler's stock; 
-    //- the beer must be sold by the wholesaler
     
-    // Calculate the price of a quote -> 
     List<BeerOrder> AddPriceToBeerOrders(List<BeerOrder> beerOrders, List<Beer> beers)
     {
         foreach (var beerOrder in beerOrders)
