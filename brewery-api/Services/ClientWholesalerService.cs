@@ -22,13 +22,15 @@ public class ClientWholesalerService
         int amountOrdered = (from order in beerOrders select order.BeerAmount).Sum();
         double? totalPrice = (from order in beerOrders select order.TotalPrice).Sum();
 
-        if (amountOrdered >= 10)
+        if (amountOrdered >= 20)
         {
-            totalPrice = totalPrice * 0.90;
-        } else if (amountOrdered >= 20)
-        {
-            totalPrice = totalPrice * 0.80;
+            totalPrice *= 0.80;
         }
+        else if (amountOrdered >= 10)
+        {
+            totalPrice *= 0.90;
+        }
+
 
         return totalPrice;
 

@@ -1,18 +1,19 @@
 namespace brewery_api;
 
-public class WholesalerBreweryService
+public static class WholesalerBreweryService
 {
-    void BuyBeer(Wholesaler wholesaler, Beer beer)
+    public static Wholesaler BuyBeer(Wholesaler wholesaler, Beer beer, int amount)
     {
-        var existingBeer = wholesaler.Beers.FirstOrDefault(b => b.Id == beer.Id);
+        var existingBeer = wholesaler.Beers.FirstOrDefault(b => b.Name == beer.Name);
 
         if (existingBeer != null)
         {
-            existingBeer.Amount += beer.Amount;
+            existingBeer.Amount += amount;
         }
         else
         {
             wholesaler.Beers.Add(beer);
         }
+        return wholesaler;
     }
 }
