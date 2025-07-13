@@ -1,6 +1,6 @@
 ﻿namespace brewery_api.Services;
 
-public class ClientWholesalerService
+public class ClientService
 {
     public BeerOrderSummary GetQuote(List<BeerOrder> beerOrders, Wholesaler? wholesaler, List<Beer> beers)
     {

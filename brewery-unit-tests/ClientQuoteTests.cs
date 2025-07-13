@@ -25,7 +25,7 @@ public class ClientQuoteTests
                     Price = 5,
                 },
             };
-        var service = new ClientWholesalerService();
+        var service = new ClientService();
         var wholesaler = new Wholesaler
         {
             Id = 1,
@@ -64,7 +64,7 @@ public class ClientQuoteTests
                 Price = 5,
             },
         };
-        var service = new ClientWholesalerService();
+        var service = new ClientService();
         var wholesaler = new Wholesaler
         {
             Id = 1,
@@ -93,7 +93,7 @@ public class ClientQuoteTests
         };
         var beers = new List<Beer>
         {};
-        var service = new ClientWholesalerService();
+        var service = new ClientService();
         var wholesaler = new Wholesaler { };
         var quote = service.GetQuote(beerOrders, wholesaler, beers);
         
@@ -119,7 +119,7 @@ public class ClientQuoteTests
                 Price = 5,
             },
         };
-        var service = new ClientWholesalerService();
+        var service = new ClientService();
         var quote = service.GetQuote(beerOrders, null, beers);
         
         Assert.That(quote.ReasonOrderInvalid, Is.EqualTo("Wholesaler must exist"));
@@ -142,7 +142,7 @@ public class ClientQuoteTests
         };
         var beers = new List<Beer>
             {};
-        var service = new ClientWholesalerService();
+        var service = new ClientService();
         var wholesaler = new Wholesaler { };
         var quote = service.GetQuote(beerOrders, wholesaler, beers);
         
@@ -161,7 +161,7 @@ public class ClientQuoteTests
         };
         var beers = new List<Beer>
             {};
-        var service = new ClientWholesalerService();
+        var service = new ClientService();
         var wholesaler = new Wholesaler { };
         var quote = service.GetQuote(beerOrders, wholesaler, beers);
         
@@ -187,7 +187,7 @@ public class ClientQuoteTests
                 Price = 5,
             },
         };
-        var service = new ClientWholesalerService();
+        var service = new ClientService();
         var wholesaler = new Wholesaler
         {
             Id = 1,

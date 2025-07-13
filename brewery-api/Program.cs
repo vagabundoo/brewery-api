@@ -12,22 +12,32 @@ var breweryDb = new BreweryContext();
 breweryDb.Database.EnsureDeleted();
 breweryDb.Database.EnsureCreated();
 
-InitBreweries(breweryDb);
-var beers = await breweryDb.Beers
-    .ToListAsync();
-InitWholesalers(breweryDb, beers);
+// Prefilling using Db methods.
+var breweryService = new BreweryService(breweryDb);
+await breweryService.Create("Leffe");
+await breweryService.Create("Duvel");
+
+var beerService = new BeerService(breweryDb);
+await beerService.Create(1, "Leffe Blond", 4);
+await beerService.Create(2, "Duvel Blond", 5);
+
+var wholesalerService = new WholesalerService(breweryDb);
+await wholesalerService.Create("LocalBrew");
+
 
 // Api Logic
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<BreweryContext>();
 builder.Services.AddScoped<BeerService>();
+builder.Services.AddScoped<BreweryService>();
+builder.Services.AddScoped<WholesalerService>();
 
 var app = builder.Build();
 
 app.MapGet("/beer", async (BeerService beerService) =>
 {
-    var foundBeers = await beerService.GetAllAsync();
-    return Results.Ok(foundBeers);
+    var beers = await beerService.GetAllAsync();
+    return Results.Ok(beers);
 });
 
 app.MapGet("/beer/{id:int}", async (int id, BeerService beerService) =>
@@ -63,47 +73,34 @@ app.MapDelete("/beer/{id}", async (BeerService service, int id) =>
         : Results.Ok($"{beer.Name} has been deleted from database");
 });
 
-app.MapGet("/brewery", async (BreweryContext db) => 
-    await db.Breweries.ToListAsync());
+app.MapGet("/brewery", async (BreweryService breweryService) =>
+{
+    var breweries = await breweryService.GetAllAsync();
+    return Results.Ok(breweries);
+});;
 
-app.MapGet("/brewery/{breweryId}",
-    async (BreweryContext db, int breweryId) =>
-    {
-        var brewery = db.Breweries
-            .FirstOrDefault(br => br.Id == breweryId);
-        if (brewery == null)
-        {
-            return Results.NotFound();
-        }
-        return Results.Ok(brewery);
-    });
+app.MapGet("/brewery/{id}", async (int id, BreweryService breweryService) =>
+{
+    var brewery = await breweryService.GetByIdAsync(id);
+    return brewery is null
+        ? Results.NotFound()
+        : Results.Ok(brewery);
+});;
 
-app.MapPost("/brewery/{breweryId}/beer/name={name}price={price}",
-    async (BreweryContext db, int breweryId, string name, double price) =>
-    {
-        var brewery = db.Breweries
-            .FirstOrDefault(br => br.Id == breweryId);
-        if (brewery == null)
-        {
-            return Results.NotFound();
-        }
-        
-        var beer = new Beer
-        {
-            Name = name,
-            Price = price,
-            BreweryId = brewery!.Id
-        };
-        
-        db.Beers.Add(beer);
-        await db.SaveChangesAsync();
+app.MapGet("/wholesaler", async (WholesalerService wholesalerService) =>
+{
+    var wholesalers = await wholesalerService.GetAllAsync();
+    return Results.Ok(wholesalers);
+});;
 
-        return Results.Ok($"Beer has been added. Name: {beer.Name}, Price: {beer.Price}, BreweryId: {beer.BreweryId}");
-    });
-
-app.MapGet("/wholesaler", async (BreweryContext db) =>
-    await db.Wholesalers.ToListAsync());
-
+app.MapGet("/wholesaler/{id}", async (int id, WholesalerService wholesalerService) =>
+{
+    var wholesaler = await wholesalerService.GetByIdAsync(id);
+    return wholesaler is null
+        ? Results.NotFound()
+        : Results.Ok(wholesaler);
+});;
+/*
 app.MapPost("/wholesaler/{wholesalerId}/beer/{beerId}", 
     async (BreweryContext db, int wholesalerId, int beerId) =>
 {
@@ -127,7 +124,6 @@ app.MapPost("/wholesaler/{wholesalerId}/beer/{beerId}",
 
 app.MapGet("/quote/sample", () =>
 {
-
 });
 
 app.MapPost("/quote/wholesalerName={wholesalerName}&beerName={beerName}&beerAmount={beerAmount}", 
@@ -147,59 +143,15 @@ app.MapPost("/quote/wholesalerName={wholesalerName}&beerName={beerName}&beerAmou
        .Where(b => b.Name == beerName)
        .ToListAsync();
     
-    var service = new ClientWholesalerService();
+    var service = new ClientService();
     var quote = service.GetQuote(beerOrders, wholesaler, availableBeers);
     
     return Results.Ok($"{quote.TextSummary}");
 });
+*/
 
 app.Run();
 return;
-
-
-async void InitBreweries(DbContext db)
-{
-    var brewery1 = new Brewery
-    {
-        Name = "Leffe"
-    };
-    db.Add(brewery1);
-    await db.SaveChangesAsync();
-    
-    var beer1 = new Beer
-    {
-        Name = "Leffe Blond",
-        BreweryId = brewery1.Id,
-        Price = 3,
-    };
-    var beer2 = new Beer
-    {
-        Name = "Leffe Tripel",
-        BreweryId = brewery1.Id,
-        Price = 5,
-    };
-    db.Add(beer1);
-    db.Add(beer2);
-    await db.SaveChangesAsync();
-}
-
-async void InitWholesalers(DbContext db, List<Beer> beers)
-{
-    var wholesaler = new Wholesaler
-    {
-        Name = "BeersRwe",
-        Beers = beers,
-    };
-
-    wholesaler.Beers.ForEach(b => b.Amount = 0);
-    db.Add(wholesaler);
-    await db.SaveChangesAsync();
-}
-
-async void UpdateWholesalerStock(DbContext db, int amount)
-{
-    
-}
 
 
 
