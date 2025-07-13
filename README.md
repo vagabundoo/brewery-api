@@ -33,6 +33,7 @@ table: beers (beerid, breweryid, price)
 wholesaler inventory (wholesalerid, beerid, stock)
 
 ## To do
+- Simplify data model
 - Add quote capability to an endpoint
 - Improve how list of list is shown in wholesaler and brewery endpoint.
 - Have test cases for exceptions -> Tests added. Could still replace with exceptions instead of string literals.

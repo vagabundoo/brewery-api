@@ -28,20 +28,15 @@ public class BreweryContext : DbContext
 
        protected override void OnModelCreating(ModelBuilder modelBuilder)
        {
-              // Configure one-to-many: Brewery -> Beers
               modelBuilder.Entity<Beer>()
-                     .HasOne(b => b.Brewery)
-                     .WithMany(br => br.Beers)
-                     .HasForeignKey(b => b.BreweryId)
-                     .OnDelete(DeleteBehavior.SetNull);
+                     .HasOne<Brewery>()
+                     .WithMany()
+                     .HasForeignKey(b => b.BreweryId);
 
-              // Configure many-to-many: Beer <-> Wholesaler
               modelBuilder.Entity<Beer>()
-                     .HasMany(b => b.Wholesalers)
+                     .HasMany<Wholesaler>()
                      .WithMany(w => w.Beers)
                      .UsingEntity(j => j.ToTable("WholesalerBeers"));
-
-              //modelBuilder.Entity<Wholesaler>();
        }
 }
 
@@ -57,19 +52,15 @@ public class Beer
        public required string Name { get; set; }
        public double Price { get; set; }
        public int Amount { get; set; }
-
-       public int BreweryId { get; set; } // Foreign key
-       public Brewery? Brewery { get; set; }
-
-       public List<Wholesaler> Wholesalers { get; set; } = new(); // many-to-many
+       public int BreweryId { get; set; } 
+       
 }
 
 public class Brewery
 {
        public int Id { get; set; }
-       public string Name { get; set; }
-
-       public List<Beer> Beers { get; set; } = new(); // one-to-many
+       [MaxLength(30)]
+       public required string Name { get; set; }
 }
 
 public class Wholesaler
@@ -77,6 +68,6 @@ public class Wholesaler
        public int Id { get; set; } 
        public string Name { get; set; }
 
-       public List<Beer> Beers { get; set; } = new(); // many-to-many
+       public List<Beer> Beers { get; set; } = new(); 
 }
 
