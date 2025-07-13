@@ -29,8 +29,14 @@ Below are listed the functional and technical requirements sent by your client
 - Use Entity Framework
 - No migrations are needed; use Ensure Deleted and Ensure Created to facilitate development and code reviews.
 
-table: beers (id, brewery, price)
-wholesaler inventory (beerid, stock)
+table: beers (beerid, breweryid, price)
+wholesaler inventory (wholesalerid, beerid, stock)
+
+## To do
+- Add quote capability to an endpoint
+- Improve how list of list is shown in wholesaler and brewery endpoint.
+- Have test cases for exceptions
+- Decide on flat tables vs (wholesaler -> list of beers)
 
 ## Api endpoints
 - GET /beer/{brewery}
