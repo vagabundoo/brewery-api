@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "gYnHOv9P3ww=",
+  "dgSpecHash": "FRy/ehpeZcM=",
   "success": true,
   "projectFilePath": "/Users/edu/RiderProjects/brewery-api/brewery-api/brewery-api.csproj",
   "expectedPackageFiles": [
@@ -32,7 +32,9 @@
     "/Users/edu/.nuget/packages/microsoft.extensions.logging.abstractions/9.0.7/microsoft.extensions.logging.abstractions.9.0.7.nupkg.sha512",
     "/Users/edu/.nuget/packages/microsoft.extensions.options/9.0.7/microsoft.extensions.options.9.0.7.nupkg.sha512",
     "/Users/edu/.nuget/packages/microsoft.extensions.primitives/9.0.7/microsoft.extensions.primitives.9.0.7.nupkg.sha512",
+    "/Users/edu/.nuget/packages/microsoft.openapi/2.0.0/microsoft.openapi.2.0.0.nupkg.sha512",
     "/Users/edu/.nuget/packages/mono.texttemplating/3.0.0/mono.texttemplating.3.0.0.nupkg.sha512",
+    "/Users/edu/.nuget/packages/scalar.aspnetcore/2.6.0/scalar.aspnetcore.2.6.0.nupkg.sha512",
     "/Users/edu/.nuget/packages/sqlitepclraw.bundle_e_sqlite3/2.1.10/sqlitepclraw.bundle_e_sqlite3.2.1.10.nupkg.sha512",
     "/Users/edu/.nuget/packages/sqlitepclraw.core/2.1.10/sqlitepclraw.core.2.1.10.nupkg.sha512",
     "/Users/edu/.nuget/packages/sqlitepclraw.lib.e_sqlite3/2.1.10/sqlitepclraw.lib.e_sqlite3.2.1.10.nupkg.sha512",
