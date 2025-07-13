@@ -5,44 +5,43 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-var db = new BreweryContext();
+var breweryDb = new BreweryContext();
 
 // In order to avoid having to deal with migrations and database state,
 // we delete and create the database every time project is run.
-db.Database.EnsureDeleted();
-db.Database.EnsureCreated();
+breweryDb.Database.EnsureDeleted();
+breweryDb.Database.EnsureCreated();
 
-InitBreweries(db);
-var beers = await db.Beers
+InitBreweries(breweryDb);
+var beers = await breweryDb.Beers
     .ToListAsync();
-InitWholesalers(db, beers);
+InitWholesalers(breweryDb, beers);
 
 // Api Logic
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<BreweryContext>();
+builder.Services.AddScoped<BeerService>();
 
 var app = builder.Build();
 
-app.MapGet("/beer", async (BreweryContext db) =>
-    await db.Beers.ToListAsync());
-
-app.MapGet("/beer/id={id}", async (BreweryContext db, int id) =>
-    await db.Beers
-        .Where(b => b.Id == id)
-        .ToListAsync());
-
-app.MapPatch("/beer/id={id}price={price}", async (BreweryContext db, int id, double price) =>
+app.MapGet("/beer", async (BeerService beerService) =>
 {
-    var beer = db.Beers
-        .FirstOrDefault(b => b.Id == id);
-    if (beer == null)
-    {
-        return Results.NotFound();
-    }
+    var foundBeers = await beerService.GetAllAsync();
+    return Results.Ok(foundBeers);
+});
 
-    beer.Price = price;
-    await db.SaveChangesAsync();
-    return Results.Ok(beer);
+app.MapGet("/beer/{id:int}", async (int id, BeerService service) =>
+    {
+        var beer = await service.GetByIdAsync(id);
+        return beer is null 
+            ? Results.NotFound() 
+            : Results.Ok(beer);
+    });
+
+app.MapPatch("/beer/{id:int}/price/{price:double}", async (int id, double price, BeerService service) =>
+{
+    var updatedBeer = await service.UpdatePriceAsync(id, price);
+    return updatedBeer is null ? Results.NotFound() : Results.Ok(updatedBeer);
 });
 
 app.MapDelete("/beer/{id}", async (BreweryContext db, int id) =>
