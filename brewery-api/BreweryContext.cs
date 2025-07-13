@@ -58,6 +58,7 @@ public class Beer
 
 public class Brewery
 {
+       [Key]
        public int Id { get; set; }
        [MaxLength(30)]
        public required string Name { get; set; }

@@ -44,13 +44,14 @@ wholesaler inventory (wholesalerid, beerid, stock)
 ### Beer 
 - GET /beer/ => get all beers
 - GET /beer/id={id} => get a beer matching a specific id
+- POST /brewery/1/beer/name=Jupilerprice=4.5 => Add a new beer to a brewery, passing through the name and price.
 - PATCH /beer/id={id}price={price} => change the price of a specific beer
 - DELETE /beer/{id} => delete a specific beer
 
 ### Brewery
 - GET /brewery/ => get all breweries
 - GET /brewery/{breweryId} => get 1 brewery by id
-- POST /brewery/1/beer/name=Jupilerprice=4.5 => Add a new beer to a brewery, passing through the name and price.
+
 Note: updating (patch) or deleting beers can be done with the generic `Beer` endpoints.
 
 ### Wholesaler

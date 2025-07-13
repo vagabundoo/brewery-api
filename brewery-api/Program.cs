@@ -30,31 +30,37 @@ app.MapGet("/beer", async (BeerService beerService) =>
     return Results.Ok(foundBeers);
 });
 
-app.MapGet("/beer/{id:int}", async (int id, BeerService service) =>
+app.MapGet("/beer/{id:int}", async (int id, BeerService beerService) =>
     {
-        var beer = await service.GetByIdAsync(id);
+        var beer = await beerService.GetByIdAsync(id);
         return beer is null 
             ? Results.NotFound() 
             : Results.Ok(beer);
     });
 
-app.MapPatch("/beer/{id:int}/price/{price:double}", async (int id, double price, BeerService service) =>
+app.MapPost("/beer/{breweryId:int}/{name}/{price:double}", 
+    async (int breweryId, string name, double price, BeerService beerService) =>
 {
-    var updatedBeer = await service.UpdatePriceAsync(id, price);
-    return updatedBeer is null ? Results.NotFound() : Results.Ok(updatedBeer);
+    var beer = await beerService.Create(breweryId, name, price);
+    return beer is null
+        ? Results.NotFound()
+        : Results.Ok(beer);
 });
 
-app.MapDelete("/beer/{id}", async (BreweryContext db, int id) =>
+app.MapPatch("/beer/{id:int}/price/{price:double}", async (int id, double price, BeerService beerService) =>
 {
-    var beer = db.Beers.FirstOrDefault(b => b.Id == id);
-    if (beer == null)
-    {
-        return Results.NotFound();
-    }
+    var beer = await beerService.UpdatePriceAsync(id, price);
+    return beer is null 
+        ? Results.NotFound() 
+        : Results.Ok(beer);
+});
 
-    db.Beers.Remove(beer);
-    await db.SaveChangesAsync();
-    return Results.Ok($"{beer.Name} has been deleted from database");
+app.MapDelete("/beer/{id}", async (BeerService service, int id) =>
+{
+    var beer = await service.DeleteAsync(id);
+    return beer is null
+        ? Results.NotFound() 
+        : Results.Ok($"{beer.Name} has been deleted from database");
 });
 
 app.MapGet("/brewery", async (BreweryContext db) => 
