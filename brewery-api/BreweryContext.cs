@@ -53,6 +53,7 @@ public class Beer
        [Key]
        public int Id { get; set; } 
 
+       [MaxLength(30)]
        public required string Name { get; set; }
        public double Price { get; set; }
        public int Amount { get; set; }
