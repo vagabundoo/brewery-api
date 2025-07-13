@@ -1,9 +1,9 @@
 ﻿## Challenge description
+![brewery-banner.png](assets/brewery-banner.png)
 Challenge as part of Csharpacademy curriculum: https://www.thecsharpacademy.com/project/64/brewery-api
 
-### Requirements
+### Given requirements
 Welcome to Belgium! You've been contacted to create a management system for breweries and wholesalers. 
-
 Below are listed the functional and technical requirements sent by your client
 
 - List all beers by brewery
@@ -39,18 +39,29 @@ wholesaler inventory (wholesalerid, beerid, stock)
 - Return Exceptions instead of strings for errors
 - Decide on flat tables vs (wholesaler -> list of beers)
 
-## Api endpoints
-- GET /beer/{brewery}
-- PUT /beer/{brewery
-- DELETE
-- UPDATE
+## Api endpoints - by entity
+### Beer 
+- GET /beer/ => get all beers
+- GET /beer/id={id} => get a beer matching a specific id
+- PATCH /beer/id={id}price={price} => change the price of a specific beer
+- DELETE /beer/{id} => delete a specific beer
 
-client requests quote to specific wholesaler
-order includes: list of (beer name/id, amount)
--> bool: possible
--> if possible: price + summary
-    - apply discounts
--> if not possible:
+### Brewery
+- GET /brewery/ => get all breweries
+- GET /brewery/{breweryId} => get 1 brewery by id
+- POST /brewery/1/beer/name=Jupilerprice=4.5 => Add a new beer to a brewery, passing through the name and price.
+Note: updateing (patch) or deleting beers can be done with the generic `Beer` endpoints.
+
+### Wholesaler
+- GET /wholesaler/ => get all wholesalers
+- GET /wholesaler/{id} => get 1 wholesaler by id
+
+### Qoute
+- GET /qoute/sample -> get an example of a quote, using dummy data.
+TODO:
+- POST /qoute/ -> get a real qoute. have to pass the data through (through json I would think, using the exisiting data classes.)
+
+# Drafts and thought process - clean up later
 
 ## Thought process
 
