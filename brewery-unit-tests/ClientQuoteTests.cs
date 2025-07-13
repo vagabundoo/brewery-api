@@ -3,7 +3,7 @@ using brewery_api.Services;
 
 namespace brewery_unit_tests;
 
-public class Tests
+public class ClientQuoteTests
 {
 
     [Test]
@@ -147,5 +147,63 @@ public class Tests
         var qoute = service.GetQoute(beerOrders, wholesaler, beers);
         
         Assert.That(qoute.ReasonOrderInvalid, Is.EqualTo("There can't be any duplicates in the order"));
+    }
+    
+    [Test]
+    public void BeerNotSoldByWholesaler()
+    {
+        var beerOrders = new List<BeerOrder>
+        {
+            new BeerOrder(
+                "Leffe Blond",
+                30
+            ), 
+        };
+        var beers = new List<Beer>
+            {};
+        var service = new ClientWholesalerService();
+        var wholesaler = new Wholesaler { };
+        var qoute = service.GetQoute(beerOrders, wholesaler, beers);
+        
+        Assert.That(qoute.ReasonOrderInvalid, Is.EqualTo("The beer must be sold by the wholesaler"));
+    }
+    
+    [Test]
+    public void OrderAmountGreaterThanWholesalerStock()
+    {
+        var beerOrders = new List<BeerOrder>
+        {
+            new BeerOrder(
+                "Leffe Blond",
+                11
+            ), 
+        };
+        var beers = new List<Beer>
+        {
+            new Beer()
+            {
+                Name = "Leffe Blond",
+                BreweryId = 1,
+                Price = 5,
+            },
+        };
+        var service = new ClientWholesalerService();
+        var wholesaler = new Wholesaler
+        {
+            Id = 1,
+            Name = "BeersRUs",
+            Beers = new List<Beer>
+            {
+                new Beer()
+                {
+                    Name = "Leffe Blond",
+                    BreweryId = 1,
+                    Amount = 10,
+                }
+            },
+        };
+        var qoute = service.GetQoute(beerOrders, wholesaler, beers);
+        
+        Assert.That(qoute.ReasonOrderInvalid, Is.EqualTo("The number of beers ordered cannot be greater than the wholesaler's stock"));
     }
 }
