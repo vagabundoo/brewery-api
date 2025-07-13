@@ -35,7 +35,7 @@ wholesaler inventory (wholesalerid, beerid, stock)
 ## To do
 - Add quote capability to an endpoint
 - Improve how list of list is shown in wholesaler and brewery endpoint.
-- Have test cases for exceptions
+- Have test cases for exceptions -> Tests added. Could still replace with exceptions instead of string literals.
 - Return Exceptions instead of strings for errors
 - Decide on flat tables vs (wholesaler -> list of beers)
 
@@ -50,16 +50,17 @@ wholesaler inventory (wholesalerid, beerid, stock)
 - GET /brewery/ => get all breweries
 - GET /brewery/{breweryId} => get 1 brewery by id
 - POST /brewery/1/beer/name=Jupilerprice=4.5 => Add a new beer to a brewery, passing through the name and price.
-Note: updateing (patch) or deleting beers can be done with the generic `Beer` endpoints.
+Note: updating (patch) or deleting beers can be done with the generic `Beer` endpoints.
 
 ### Wholesaler
 - GET /wholesaler/ => get all wholesalers
 - GET /wholesaler/{id} => get 1 wholesaler by id
 
-### Qoute
-- GET /qoute/sample -> get an example of a quote, using dummy data.
+### Quote
+- GET /quote/sample -> get an example of a quote, using dummy data.
 TODO:
-- POST /qoute/ -> get a real qoute. have to pass the data through (through json I would think, using the exisiting data classes.)
+- POST /quote/ -> 
+- POST /quote/ -> get a real qoute. have to pass the data through (through json I would think, using the existing data classes.)
 
 # Drafts and thought process - clean up later
 

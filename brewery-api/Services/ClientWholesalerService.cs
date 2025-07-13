@@ -2,7 +2,7 @@
 
 public class ClientWholesalerService
 {
-    public BeerOrderSummary GetQoute(List<BeerOrder> beerOrders, Wholesaler? wholesaler, List<Beer> beers)
+    public BeerOrderSummary GetQuote(List<BeerOrder> beerOrders, Wholesaler? wholesaler, List<Beer> beers)
     {
         var summary = new BeerOrderSummary(beerOrders);
         var invalidOrderMessage = GetReasonOrderInvalid(beerOrders, wholesaler);

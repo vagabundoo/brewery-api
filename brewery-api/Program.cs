@@ -1,4 +1,5 @@
 ﻿using brewery_api;
+using brewery_api.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -98,10 +99,53 @@ app.MapPost("/brewery/{breweryId}/beer/name={name}price={price}",
 app.MapGet("/wholesaler", async (BreweryContext db) =>
     await db.Wholesalers.ToListAsync());
 
+app.MapPost("/wholesaler/{wholesalerId}/beer/{beerId}", 
+    async (BreweryContext db, int wholesalerId, int beerId) =>
+{
+    var wholesaler = db.Wholesalers
+        .Include(wholesaler => wholesaler.Beers)
+        .FirstOrDefault(w => w.Id == wholesalerId);
+    if (wholesaler == null)
+    {
+        return Results.NotFound();
+    }
+    var beer = db.Beers.FirstOrDefault(b => b.Id == beerId);
+    if (beer == null)
+    {
+        return Results.NotFound();
+    }
+    var wholesalerBeers = wholesaler.Beers;
+    wholesalerBeers.Add(beer);
+    await db.SaveChangesAsync();
+    return Results.Ok($"Beer has been added to {wholesaler.Name}.\n Name: {beer.Name}, Price: {beer.Price}, BreweryId: {beer.BreweryId}");
+});
+
 app.MapGet("/quote/sample", () =>
 {
-    //var quote = new { Summary = summary, Price = price };
-    //return Results.Json(quote);
+
+});
+
+app.MapPost("/quote/wholesalerName={wholesalerName}&beerName={beerName}&beerAmount={beerAmount}", 
+    async (BreweryContext db, string wholesalerName, string beerName, int beerAmount) =>
+{
+    var beerOrders = new List<BeerOrder>
+    {
+        new BeerOrder(
+           beerName,
+           beerAmount
+        ), 
+    };
+   var wholesaler = await db.Wholesalers
+       .FirstOrDefaultAsync(w => w.Name == wholesalerName);
+   
+   var availableBeers = await db.Beers
+       .Where(b => b.Name == beerName)
+       .ToListAsync();
+    
+    var service = new ClientWholesalerService();
+    var quote = service.GetQuote(beerOrders, wholesaler, availableBeers);
+    
+    return Results.Ok($"{quote.TextSummary}");
 });
 
 app.Run();
@@ -149,9 +193,9 @@ async void InitWholesalers(DbContext db, List<Beer> beers)
 
 async void UpdateWholesalerStock(DbContext db, int amount)
 {
-    //db.Wholesa
+    
 }
 
 
-//var beers = db.Beers.Local.ToHashSet();
+
 

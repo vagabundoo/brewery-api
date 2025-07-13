@@ -40,9 +40,9 @@ public class ClientQuoteTests
                 }
             },
         };
-        var qoute = service.GetQoute(beerOrders, wholesaler, beers);
+        var quote = service.GetQuote(beerOrders, wholesaler, beers);
         
-        Assert.That(qoute.TextSummary, Is.EqualTo("Beer: Leffe Blond, Amount: 30, Price = 5"));
+        Assert.That(quote.TextSummary, Is.EqualTo("Beer: Leffe Blond, Amount: 30, Price = 5"));
     }
     
     [Test]
@@ -79,9 +79,9 @@ public class ClientQuoteTests
                 }
             },
         };
-        var qoute = service.GetQoute(beerOrders, wholesaler, beers);
+        var quote = service.GetQuote(beerOrders, wholesaler, beers);
         
-        Assert.That(qoute.TextSummary, Is.EqualTo("Beer: Leffe Blond, Amount: 30, Price = 5"));
+        Assert.That(quote.TextSummary, Is.EqualTo("Beer: Leffe Blond, Amount: 30, Price = 5"));
     }
     
     [Test]
@@ -95,9 +95,9 @@ public class ClientQuoteTests
         {};
         var service = new ClientWholesalerService();
         var wholesaler = new Wholesaler { };
-        var qoute = service.GetQoute(beerOrders, wholesaler, beers);
+        var quote = service.GetQuote(beerOrders, wholesaler, beers);
         
-        Assert.That(qoute.ReasonOrderInvalid, Is.EqualTo("Order is empty"));
+        Assert.That(quote.ReasonOrderInvalid, Is.EqualTo("Order is empty"));
     }
     
     [Test]
@@ -120,9 +120,9 @@ public class ClientQuoteTests
             },
         };
         var service = new ClientWholesalerService();
-        var qoute = service.GetQoute(beerOrders, null, beers);
+        var quote = service.GetQuote(beerOrders, null, beers);
         
-        Assert.That(qoute.ReasonOrderInvalid, Is.EqualTo("Wholesaler must exist"));
+        Assert.That(quote.ReasonOrderInvalid, Is.EqualTo("Wholesaler must exist"));
     }
     
     [Test]
@@ -144,9 +144,9 @@ public class ClientQuoteTests
             {};
         var service = new ClientWholesalerService();
         var wholesaler = new Wholesaler { };
-        var qoute = service.GetQoute(beerOrders, wholesaler, beers);
+        var quote = service.GetQuote(beerOrders, wholesaler, beers);
         
-        Assert.That(qoute.ReasonOrderInvalid, Is.EqualTo("There can't be any duplicates in the order"));
+        Assert.That(quote.ReasonOrderInvalid, Is.EqualTo("There can't be any duplicates in the order"));
     }
     
     [Test]
@@ -163,9 +163,9 @@ public class ClientQuoteTests
             {};
         var service = new ClientWholesalerService();
         var wholesaler = new Wholesaler { };
-        var qoute = service.GetQoute(beerOrders, wholesaler, beers);
+        var quote = service.GetQuote(beerOrders, wholesaler, beers);
         
-        Assert.That(qoute.ReasonOrderInvalid, Is.EqualTo("The beer must be sold by the wholesaler"));
+        Assert.That(quote.ReasonOrderInvalid, Is.EqualTo("The beer must be sold by the wholesaler"));
     }
     
     [Test]
@@ -202,8 +202,8 @@ public class ClientQuoteTests
                 }
             },
         };
-        var qoute = service.GetQoute(beerOrders, wholesaler, beers);
+        var quote = service.GetQuote(beerOrders, wholesaler, beers);
         
-        Assert.That(qoute.ReasonOrderInvalid, Is.EqualTo("The number of beers ordered cannot be greater than the wholesaler's stock"));
+        Assert.That(quote.ReasonOrderInvalid, Is.EqualTo("The number of beers ordered cannot be greater than the wholesaler's stock"));
     }
 }
