@@ -36,6 +36,7 @@ wholesaler inventory (wholesalerid, beerid, stock)
 - Add quote capability to an endpoint
 - Improve how list of list is shown in wholesaler and brewery endpoint.
 - Have test cases for exceptions
+- Return Exceptions instead of strings for errors
 - Decide on flat tables vs (wholesaler -> list of beers)
 
 ## Api endpoints

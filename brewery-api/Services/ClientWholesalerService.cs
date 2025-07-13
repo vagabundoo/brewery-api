@@ -2,18 +2,21 @@
 
 public class ClientWholesalerService
 {
-    public (List<BeerOrder>, double) GetQoute(List<BeerOrder> beerOrders, Wholesaler wholesaler, List<Beer> beers)
+    public BeerOrderSummary GetQoute(List<BeerOrder> beerOrders, Wholesaler? wholesaler, List<Beer> beers)
     {
+        var summary = new BeerOrderSummary(beerOrders);
         var invalidOrderMessage = GetReasonOrderInvalid(beerOrders, wholesaler);
         if (invalidOrderMessage != null)
         {
-            Console.WriteLine(invalidOrderMessage);
+            summary.ReasonOrderInvalid = invalidOrderMessage;
+            return summary;
         }
         
         beerOrders = AddPriceToBeerOrders(beerOrders, beers);
-        var totalPrice = GetTotalPriceWithDiscount(beerOrders);
+        summary.TotalPrice = GetTotalPriceWithDiscount(beerOrders);
+        summary.TextSummary = SummarizeQuoteToString(beerOrders);
         
-        return (beerOrders, totalPrice);
+        return summary;
     }
 
     public string SummarizeQuoteToString(List<BeerOrder> beerOrders)
@@ -37,8 +40,6 @@ public class ClientWholesalerService
         {
             totalPrice *= 0.90;
         }
-
-
         return totalPrice;
 
     }
@@ -47,17 +48,17 @@ public class ClientWholesalerService
     {
         if (beerOrders.Count == 0)
         {
-            return "order is empty";    
+            return "Order is empty";    
         }
         if (wholesaler == null)
         {
-            return "wholesaler must exist";
+            return "Wholesaler must exist";
         }
         
-        var allUnique = beerOrders.Distinct();
-        if (allUnique.Count() != beerOrders.Count)
+        var uniqueBeerNames = beerOrders.Select(b => b.BeerName).Distinct().ToList();
+        if (uniqueBeerNames.Count != beerOrders.Count)
         {
-            return "there can't be any duplicates in the order";
+            return "There can't be any duplicates in the order";
         }
 
         foreach (var beerOrder in beerOrders)
@@ -66,7 +67,7 @@ public class ClientWholesalerService
             var beerAvaliable = availableBeers.Any(b => b.Name == beerOrder.BeerName);
             if (!beerAvaliable)
             {
-                return "the beer must be sold by the wholesaler";
+                return "The beer must be sold by the wholesaler";
             }
 
             var beerInStock = (
@@ -77,7 +78,7 @@ public class ClientWholesalerService
 
             if (!beerInStock)
             {
-                return "the number of beers ordered cannot be greater than the wholesaler's stock";
+                return "The number of beers ordered cannot be greater than the wholesaler's stock";
             }
         }
         return null;
@@ -100,4 +101,12 @@ public class BeerOrder(string beerName, int beerAmount)
     public readonly string BeerName = beerName;
     public readonly int BeerAmount = beerAmount;
     public double? TotalPrice = null;
+}
+
+public class BeerOrderSummary(List<BeerOrder> beerOrders)
+{
+    public List<BeerOrder> BeerOrders = beerOrders;
+    public double TotalPrice { get; set; }
+    public string? ReasonOrderInvalid { get; set; }
+    public string? TextSummary { get; set; }
 }

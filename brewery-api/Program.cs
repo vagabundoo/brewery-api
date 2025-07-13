@@ -50,8 +50,7 @@ beerOrders = service.AddPriceToBeerOrders(beerOrders, beers);
 
 var totalPrice = service.GetTotalPriceWithDiscount(beerOrders);
 
-var (filledOrders, price) = service.GetQoute(beerOrders, wholesaler, wholesaler.Beers);
-var summary = service.SummarizeQuoteToString(filledOrders);
+var beerOrderSummary = service.GetQoute(beerOrders, wholesaler, wholesaler.Beers);
 
 // Api Logic
 var builder = WebApplication.CreateBuilder(args);
@@ -138,8 +137,8 @@ app.MapGet("/wholesaler", async (BreweryContext db) =>
 
 app.MapGet("/quote/sample", () =>
 {
-    var quote = new { Summary = summary, Price = price };
-    return Results.Json(quote);
+    //var quote = new { Summary = summary, Price = price };
+    //return Results.Json(quote);
 });
 
 app.Run();
