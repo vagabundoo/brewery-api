@@ -1,17 +1,13 @@
 ﻿using brewery_api;
-using brewery_api.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi;
-using Scalar.AspNetCore;
 
 var db = new BreweryContext();
 
-// Reset database
-//Database logic
+// In order to avoid having to deal with migrations and database state,
+// we delete and create the database every time project is run.
 db.Database.EnsureDeleted();
 db.Database.EnsureCreated();
 
@@ -20,44 +16,11 @@ var beers = await db.Beers
     .ToListAsync();
 InitWholesalers(db, beers);
 
-var wholesaler = await db.Wholesalers.FirstAsync();
-
-wholesaler.Beers
-    .ForEach(b => Console.WriteLine($"{b.Id} Beer: {b.Name}, Amount: {b.Amount}"));
-
-var beerToPurchase = beers[0];
-wholesaler.Beers
-    .Find(b => b.Id == beerToPurchase.Id)
-    .Amount += 20;
-
-beerToPurchase = db.Beers.Find(beerToPurchase.Id);
-WholesalerBreweryService.IncrementBeerAmount(beerToPurchase, 50);
-await db.SaveChangesAsync();
-
-wholesaler.Beers
-    .ForEach(b => Console.WriteLine($"{b.Id} Beer: {b.Name}, Amount: {b.Amount}"));
-
-// Client asks for quote
-var beerOrders = new List<BeerOrder>
-{
-    new BeerOrder("Leffe Blond", 30),
-};
-
-var service = new ClientWholesalerService();
-var errorMessage = service.GetReasonOrderInvalid(beerOrders, wholesaler);
-
-beerOrders = service.AddPriceToBeerOrders(beerOrders, beers);
-
-var totalPrice = service.GetTotalPriceWithDiscount(beerOrders);
-
-var beerOrderSummary = service.GetQoute(beerOrders, wholesaler, wholesaler.Beers);
-
 // Api Logic
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<BreweryContext>();
 
 var app = builder.Build();
-
 
 app.MapGet("/beer", async (BreweryContext db) =>
     await db.Beers.ToListAsync());
