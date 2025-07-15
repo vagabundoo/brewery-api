@@ -93,16 +93,22 @@ app.MapGet("/wholesaler", async (WholesalerService wholesalerService) =>
     return Results.Ok(wholesalers);
 });;
 
+app.MapPost("/wholesaler/{name}", async (WholesalerService wholesalerService, string name) =>
+{
+    var wholesaler = await wholesalerService.Create(name);
+    return Results.Ok(wholesaler);
+});;
+
 app.MapGet("/wholesaler/{id}", async (int id, WholesalerService wholesalerService) =>
 {
     var wholesaler = await wholesalerService.GetByIdAsync(id);
     return wholesaler is null
         ? Results.NotFound()
         : Results.Ok(wholesaler);
-});;
-/*
-app.MapPost("/wholesaler/{wholesalerId}/beer/{beerId}", 
-    async (BreweryContext db, int wholesalerId, int beerId) =>
+});
+
+app.MapPost("/wholesaler/{wholesalerId}/beer/{beerId}/amount/{amount:int}", 
+    async (BreweryContext db, int wholesalerId, int beerId, int amount) =>
 {
     var wholesaler = db.Wholesalers
         .Include(wholesaler => wholesaler.Beers)
@@ -116,10 +122,13 @@ app.MapPost("/wholesaler/{wholesalerId}/beer/{beerId}",
     {
         return Results.NotFound();
     }
+    
+    beer.Amount += amount;
+    
     var wholesalerBeers = wholesaler.Beers;
     wholesalerBeers.Add(beer);
     await db.SaveChangesAsync();
-    return Results.Ok($"Beer has been added to {wholesaler.Name}.\n Name: {beer.Name}, Price: {beer.Price}, BreweryId: {beer.BreweryId}");
+    return Results.Ok($"Beer has been added to {wholesaler.Name}.\n Name: {beer.Name}, Price: {beer.Price}, BreweryId: {beer.BreweryId}, and has a stock of {beer.Amount}.");
 });
 
 app.MapGet("/quote/sample", () =>
@@ -131,7 +140,7 @@ app.MapPost("/quote/wholesalerName={wholesalerName}&beerName={beerName}&beerAmou
 {
     var beerOrders = new List<BeerOrder>
     {
-        new BeerOrder(
+        new(
            beerName,
            beerAmount
         ), 
@@ -148,7 +157,7 @@ app.MapPost("/quote/wholesalerName={wholesalerName}&beerName={beerName}&beerAmou
     
     return Results.Ok($"{quote.TextSummary}");
 });
-*/
+
 
 app.Run();
 return;
