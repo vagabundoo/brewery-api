@@ -28,15 +28,17 @@ public class BreweryContext : DbContext
 
        protected override void OnModelCreating(ModelBuilder modelBuilder)
        {
-              modelBuilder.Entity<Beer>()
-                     .HasOne<Brewery>()
-                     .WithMany()
-                     .HasForeignKey(b => b.BreweryId);
+              modelBuilder.Entity<WholesalerBeer>()
+                     .HasKey(wb => new { wb.WholesalerId, wb.BeerId });
+
+              modelBuilder.Entity<WholesalerBeer>()
+                     .HasOne(wb => wb.Wholesaler)
+                     .WithMany(w => w.Beers)
+                     .HasForeignKey(wb => wb.WholesalerId);
 
               modelBuilder.Entity<Beer>()
-                     .HasMany<Wholesaler>()
-                     .WithMany(w => w.Beers)
-                     .UsingEntity(j => j.ToTable("WholesalerBeers"));
+                     .HasOne<Brewery>();
+
        }
 }
 
@@ -51,7 +53,6 @@ public class Beer
        [MaxLength(30)]
        public required string Name { get; set; }
        public double Price { get; set; }
-       public int Amount { get; set; }
        public int BreweryId { get; set; } 
        
 }
@@ -69,6 +70,16 @@ public class Wholesaler
        public int Id { get; set; } 
        public string Name { get; set; }
 
-       public List<Beer> Beers { get; set; } = new(); 
+       public ICollection<WholesalerBeer> Beers { get; set; } = new List<WholesalerBeer>();
+}
+
+public class WholesalerBeer
+{
+       public int WholesalerId { get; set; }
+       public Wholesaler Wholesaler { get; set; }
+       
+       public int BeerId { get; set; }
+       public int Amount { get; set; }
+       
 }
 

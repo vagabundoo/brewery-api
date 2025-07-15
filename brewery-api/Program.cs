@@ -140,7 +140,7 @@ app.MapPost("/wholesaler/{wholesalerId}/beer/{beerId}/amount/{amount:int}",
 app.MapGet("/quote/sample", () =>
 {
 });
-
+/*
 app.MapPost("/quote/wholesalerName={wholesalerName}&beerName={beerName}&beerAmount={beerAmount}", 
     async (BreweryContext db, string wholesalerName, string beerName, int beerAmount) =>
 {
@@ -162,7 +162,7 @@ app.MapPost("/quote/wholesalerName={wholesalerName}&beerName={beerName}&beerAmou
     var quote = service.GetQuote(beerOrders, wholesaler, availableBeers);
     
     return Results.Ok($"{quote.TextSummary}");
-});
+});*/
 
 
 app.Run();

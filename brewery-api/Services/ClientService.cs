@@ -1,5 +1,5 @@
 ﻿namespace brewery_api.Services;
-
+/*
 public class ClientService
 {
     public BeerOrderSummary GetQuote(List<BeerOrder> beerOrders, Wholesaler? wholesaler, List<Beer> beers)
@@ -109,4 +109,4 @@ public class BeerOrderSummary(List<BeerOrder> beerOrders)
     public double TotalPrice { get; set; }
     public string? ReasonOrderInvalid { get; set; }
     public string? TextSummary { get; set; }
-}
+}*/

@@ -30,24 +30,46 @@ public class WholesalerService
         var wholesaler = _db.Wholesalers
             .Include(wholesaler => wholesaler.Beers)
             .FirstOrDefault(w => w.Id == wholesalerId);
-        var beer = _db.Beers.FirstOrDefault(b => b.Id == beerId);
-        
-        if (wholesaler == null || beer == null)
+        if (wholesaler == null)
         {
             return null;
         }
+        var wholesalerBeer = wholesaler.Beers 
+            .FirstOrDefault(wb => wb.BeerId == beerId);
+
+        if (wholesalerBeer != null)
+        {
+            wholesalerBeer.Amount = amount;
+        }
+        else
+        {
+            wholesaler.Beers.Add(new WholesalerBeer
+            {
+                WholesalerId = wholesalerId,
+                BeerId = beerId,
+                Amount = amount,
+            });
+        }
+        await _db.SaveChangesAsync();
+        return wholesaler;
         
-        var wholesalerBeers = wholesaler.Beers.FirstOrDefault(b => b.Id == beerId);
+    }
+        
+        
+
+
+
+        /*var wholesalerBeers = wholesaler.Beers.FirstOrDefault(b => b. == beerId);
         if (wholesalerBeers != null)
         {
             wholesalerBeers.Amount += amount;
-            
+
             await _db.SaveChangesAsync();
             return wholesaler;
         }
-        
+
         wholesaler.Beers.Add(beer);
         await _db.SaveChangesAsync();
-        return wholesaler;
-    }
+        return wholesaler;*/
+    
 }

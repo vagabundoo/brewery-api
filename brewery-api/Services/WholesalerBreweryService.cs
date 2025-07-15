@@ -1,5 +1,5 @@
 namespace brewery_api;
-
+/*
 public static class WholesalerBreweryService
 {
     public static Wholesaler BuyBeer(Wholesaler wholesaler, Beer beer, int amount)
@@ -27,4 +27,4 @@ public static class WholesalerBreweryService
         beer.Amount += amount;
         return beer;
     }
-}
+}*/
