@@ -108,9 +108,14 @@ app.MapGet("/wholesaler/{id}", async (int id, WholesalerService wholesalerServic
 });
 
 app.MapPost("/wholesaler/{wholesalerId}/beer/{beerId}/amount/{amount:int}", 
-    async (BreweryContext db, int wholesalerId, int beerId, int amount) =>
+    async (WholesalerService service, int wholesalerId, int beerId, int amount) =>
 {
-    var wholesaler = db.Wholesalers
+    var wholesaler = await service.BuyBeer(wholesalerId, beerId, amount);
+    return wholesaler is null
+        ? Results.NotFound()
+        : Results.Ok(wholesaler);
+    
+    /*var wholesaler = db.Wholesalers
         .Include(wholesaler => wholesaler.Beers)
         .FirstOrDefault(w => w.Id == wholesalerId);
     if (wholesaler == null)
@@ -129,6 +134,7 @@ app.MapPost("/wholesaler/{wholesalerId}/beer/{beerId}/amount/{amount:int}",
     wholesalerBeers.Add(beer);
     await db.SaveChangesAsync();
     return Results.Ok($"Beer has been added to {wholesaler.Name}.\n Name: {beer.Name}, Price: {beer.Price}, BreweryId: {beer.BreweryId}, and has a stock of {beer.Amount}.");
+    */
 });
 
 app.MapGet("/quote/sample", () =>
