@@ -1,13 +1,33 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AExceptionDispatchInfo_002Ecs_002Fl_003A_002E_002E_003F_002E_002E_003FLibrary_003FApplication_0020Support_003FJetBrains_003FRider2025_002E1_003Fresharper_002Dhost_003FSourcesCache_003Fbf9021a960b74107a7e141aa06bc9d8a0a53c929178c2fb95b1597be8af8dc_003FExceptionDispatchInfo_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AMigrationCommandExecutor_002Ecs_002Fl_003A_002E_002E_003F_002E_002E_003FLibrary_003FApplication_0020Support_003FJetBrains_003FRider2025_002E1_003Fresharper_002Dhost_003FSourcesCache_003Fb43021565ba7f13262dd95827ae378ea6015db2c146979398f92c7356d98488_003FMigrationCommandExecutor_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=341d6eaa_002Dc374_002D49da_002D9a20_002D1e8189af89c3/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="EmptyOrder" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=1e15dec6_002D594d_002D48c4_002Da149_002Df5fa247e6ffa/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="MissingWholesaler" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
-    &lt;TestId&gt;NUnit3x::1687BAD6-381F-46C4-98D3-EFB47EFE88D8::net9.0::brewery_unit_tests.WholesalerTests.BuyBeer&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::1687BAD6-381F-46C4-98D3-EFB47EFE88D8::net9.0::brewery_unit_tests.WholesalerBuyBeerTests.MissingWholesaler&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=97580a14_002D86c4_002D45b9_002D8bca_002D67c2297fbde5/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="ClientQouteTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=341d6eaa_002Dc374_002D49da_002D9a20_002D1e8189af89c3/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="EmptyOrder" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
-    &lt;TestId&gt;NUnit3x::1687BAD6-381F-46C4-98D3-EFB47EFE88D8::net9.0::brewery_unit_tests.WholesalerTests.BuyBeer&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::1687BAD6-381F-46C4-98D3-EFB47EFE88D8::net9.0::brewery_unit_tests.WholesalerBuyBeerTests.MissingWholesaler&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=7c6f6194_002D901a_002D4ce6_002Dacc8_002D1762878ab9cf/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="MissingWholesaler #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;NUnit3x::1687BAD6-381F-46C4-98D3-EFB47EFE88D8::net9.0::brewery_unit_tests.WholesalerBuyBeerTests.MissingWholesaler&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=97580a14_002D86c4_002D45b9_002D8bca_002D67c2297fbde5/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="ClientQouteTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;NUnit3x::1687BAD6-381F-46C4-98D3-EFB47EFE88D8::net9.0::brewery_unit_tests.WholesalerBuyBeerTests.MissingWholesaler&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=aa2ff4ad_002D6821_002D4e7d_002D861e_002Dd8d722e858f0/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="MissingWholesaler #3" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;NUnit3x::1687BAD6-381F-46C4-98D3-EFB47EFE88D8::net9.0::brewery_unit_tests.WholesalerBuyBeerTests.MissingWholesaler&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ed28acf1_002D292f_002D4d2d_002D8bbe_002D16d1e9e01cdc/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="MissingWholesaler #4" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;NUnit3x::1687BAD6-381F-46C4-98D3-EFB47EFE88D8::net9.0::brewery_unit_tests.WholesalerBuyBeerTests.MissingWholesaler&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

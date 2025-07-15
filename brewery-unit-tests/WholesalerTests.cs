@@ -3,7 +3,7 @@ using brewery_api.Services;
 
 namespace brewery_unit_tests;
 
-public class WholesalerTests
+public class WholesalerBuyBeerTests
 {
     [Test]
     public async Task BuyBeer()
@@ -31,5 +31,20 @@ public class WholesalerTests
         Assert.That(beers, Has.Count.EqualTo(1));
         var addedBeer = beers.First();
         Assert.That(addedBeer.Amount, Is.EqualTo(200));
+    }
+
+    [Test]
+    public async Task MissingWholesaler()
+    {
+        var db = new BreweryContext();
+        await db.Database.EnsureDeletedAsync();
+        await db.Database.EnsureCreatedAsync();
+        var service = new WholesalerService(db);
+        var wholesaler = db.Wholesalers;
+        await db.SaveChangesAsync();
+        var result = await service
+            .BuyBeer(1, 1, 200);
+        
+        Assert.That(result, Is.Null);
     }
 }
